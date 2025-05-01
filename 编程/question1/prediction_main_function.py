@@ -3,6 +3,9 @@ import statsmodels.api as sm
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+pd.set_option('display.max_columns', None)  # 显示所有列
+pd.set_option('display.max_rows', None)     # 显示所有行
+
 
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
