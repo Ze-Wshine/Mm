@@ -8,6 +8,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score,mean_squared_error
 
+import statsmodels.api as sm
+
 df = pd.read_excel(r'F:\数模校赛\Mm\编程\数据集\第二题整合数据.xlsx')
 
 
