@@ -53,3 +53,4 @@ print("回归系数:", coefficients)
 # 模型评分（R²）
 r2 = ridge_cv.score(X_scaled, y)
 print(f"模型 R² 分数: {r2}")
+
