@@ -9,7 +9,7 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 # 指定中文字体
 plt.rcParams['font.sans-serif'] = ['SimHei']
 
-df = pd.read_excel(r'F:\数模校赛\Mm\编程\数据集\整合版数据.xlsx',sheet_name='1',engine='openpyxl')
+df = pd.read_excel(r'F:\数模校赛\Mm\编程\数据集\第一题整合版数据.xlsx',sheet_name='1',engine='openpyxl')
 
 # 自变量与因变量准备
 
@@ -47,6 +47,10 @@ features = [
     '出生率/%','死亡率/%','人口自然增长率/%','城镇化率/%',
     '年末常驻总人口/万人','义务教育学校数','高中教育学校数','高等教育学校数'
 ]
+
+print(model_义务.params)  # 输出义务教育模型的回归系数β
+print(model_高中.params)  # 输出高中教育模型的回归系数β
+print(model_高等.params)  # 输出高等教育模型的回归系数β
 
 # 储存未来三年预测结果
 future_data = {}
@@ -107,6 +111,7 @@ plt.title('未来三年吉林省各教育阶段在校生人数预测')
 plt.legend()
 plt.grid(True)
 plt.show()
+
 
 
 
