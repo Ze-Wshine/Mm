@@ -1,13 +1,10 @@
-import prediction_main_function as main
-import pandas as pd
+#模型检验
+
+import 多元线性回归法 as main
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
 
-from statsmodels.stats.outliers_influence import variance_inflation_factor
-
-#模型进一步检验
+plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
 
 #这里以义务教育模型为例
 #1.检查残差是否近似正态分布
@@ -35,6 +32,5 @@ plt.show()
 
 #筛选显著自变量
 print(main.model_义务.summary())
-
 
 #其余模型预测均同理。

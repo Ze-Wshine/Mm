@@ -5,8 +5,8 @@ import os
 # 获取上一级目录路径
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from question1 import prediction_main_function as main
-from question1 import model_process as process
+from 提交 import 多元线性回归法 as main
+from 提交 import model_process as process
 
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
