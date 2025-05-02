@@ -37,6 +37,31 @@ model = ExponentialSmoothing(
 # 拟合模型（自动估计平滑参数）
 fit = model.fit(optimized=True)
 
+
+# 获取趋势（b_t）和水平（ℓ_t）估计值
+# 水平估计值
+level_estimates = fit.level
+
+# 趋势估计值
+trend_estimates = fit.trend
+
+# 打印水平和趋势估计
+print("水平估计 (ℓ_t):")
+print(level_estimates)
+
+print("趋势估计 (b_t):")
+print(trend_estimates)
+
+# 如果你需要把它们转换成 DataFrame 方便查看
+result_df = pd.DataFrame({
+    'year': df.index.year,
+    '水平估计 (ℓ_t)': level_estimates,
+    '趋势估计 (b_t)': trend_estimates
+})
+
+print(result_df)
+
+
 #检验模型拟合程度是否达标
 
 # 1.拟合值与残差
@@ -47,7 +72,6 @@ residuals = series - fitted_vals
 rmse = np.sqrt(mean_squared_error(series, fitted_vals))
 mae  = mean_absolute_error(series, fitted_vals)
 mape = np.mean(np.abs((series - fitted_vals) / series)) * 100
-
 print(f"RMSE: {rmse:.2f} 亿元")
 print(f"MAE: {mae:.2f} 亿元")
 print(f"MAPE: {mape:.2f}%")
@@ -58,7 +82,7 @@ sm.qqplot(residuals, line='s')
 plt.title('残差 Q–Q 图')
 plt.show()
 #数据点大致落在参考直线附近，正态性成立。
-
+'''
 # 4.Ljung–Box 检验
 max_lag = min(10, len(residuals) - 1)
 lb_df = acorr_ljungbox(residuals, lags=[max_lag], return_df=True)
@@ -111,10 +135,11 @@ else:
 forecast = fit.forecast(3)
 forecast.index = pd.to_datetime([2024, 2025, 2026], format='%Y')
 
-print("\n2024–2026 年度预测：")
+print("\n未来三年年度预测：")
 print(forecast)
+'''
 
-# 可视化结果
+'''# 可视化结果
 plt.figure(figsize=(10, 6))
 plt.plot(series.index.year, series, 'o-', label='历史经费')
 plt.plot(fitted_vals.index.year, fitted_vals, 'r--', label='拟合经费')
@@ -125,5 +150,6 @@ plt.title('双指数平滑：吉林省教育经费拟合与预测')
 plt.legend()
 plt.grid(True)
 plt.show()
+'''
 
 
