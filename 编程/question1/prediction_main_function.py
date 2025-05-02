@@ -1,16 +1,13 @@
+#导入必要库
+
 import pandas as pd
-import statsmodels.api as sm
-import matplotlib.pyplot as plt
+import statsmodels.api as sm #回归分析和统计建模库
 import numpy as np
-import seaborn as sns
 pd.set_option('display.max_columns', None)  # 显示所有列
 pd.set_option('display.max_rows', None)     # 显示所有行
 
 
 from statsmodels.stats.outliers_influence import variance_inflation_factor
-
-# 指定中文字体
-plt.rcParams['font.sans-serif'] = ['SimHei']
 
 df = pd.read_excel(r'F:\数模校赛\Mm\编程\数据集\第一题整合版数据.xlsx',sheet_name='1',engine='openpyxl')
 
@@ -32,6 +29,7 @@ y高中 = df['高中教育在校生/万人']
 y高等 = df['高等教育在校生/万人']
 
 #使用最小二乘法（OLS）对三个阶段的在校生人数分别建立回归模型并估计其参数
+
 # 义务教育模型
 model_义务 = sm.OLS(y义务, X).fit()
 
@@ -41,7 +39,7 @@ model_高中 = sm.OLS(y高中, X).fit()
 # 高等教育模型
 model_高等 = sm.OLS(y高等, X).fit()
 # 进行预测
-# 先进行未来三年自变量的预测。
+# 先进行未来三年自变量的线性预测。
 # 提取年份
 years = np.arange(len(df))  # 如果你的年份是按行排列的，可以用索引代替
 
@@ -100,20 +98,6 @@ future_predictions = pd.DataFrame({
 future_predictions.index = ['Year_1', 'Year_2', 'Year_3']
 print("未来三年预测的在校生人数：")
 print(future_predictions)
-
-# 绘制未来三年预测的在校生人数
-plt.figure(figsize=(10, 6))
-
-plt.plot(future_predictions.index, future_predictions['义务教育在校生/万人'], label='义务教育在校生', marker='o')
-plt.plot(future_predictions.index, future_predictions['高中教育在校生/万人'], label='高中教育在校生', marker='o')
-plt.plot(future_predictions.index, future_predictions['高等教育在校生/万人'], label='高等教育在校生', marker='o')
-
-plt.xlabel('年份')
-plt.ylabel('在校生人数（万人）')
-plt.title('未来三年吉林省各教育阶段在校生人数预测')
-plt.legend()
-plt.grid(True)
-plt.show()
 
 
 

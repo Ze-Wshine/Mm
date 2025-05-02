@@ -1,12 +1,19 @@
+#导入必要库
 import pandas as pd
 import matplotlib.pyplot as plt
 from statsmodels.tsa.stattools import adfuller
+import os
+print(os.getcwd())
+
+
 plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
 
 # 读取Excel数据
-df = pd.read_excel(r'F:\数模校赛\Mm\编程\数据集\在校生人数历史数据.xls',sheet_name='17-10',engine='xlrd')
+df = pd.read_excel(r'数据集\在校生人数历史数据.xls', sheet_name='17-10', engine='xlrd')
 
-# 执行 ADF 检验
+
+
+# 定义ADF函数
 def adf_test(series, label):
     result = adfuller(series)
     print(f"\n【{label}】ADF检验统计量: {result[0]}")
@@ -16,6 +23,7 @@ def adf_test(series, label):
     else:
         print(f"→ {label} 是非平稳的")
 
+#执行ADF检验
 adf_test(df['义务教育在校生'], '义务教育')
 adf_test(df['高中教育在校生'], '高中教育')
 adf_test(df['高等教育在校生'], '高等教育')
@@ -26,5 +34,6 @@ adf_test(df['义务教育差分'].dropna(), '义务教育一阶差分')
 
 df['高等教育差分'] = df['高等教育在校生'].diff()
 adf_test(df['高等教育差分'].dropna(), '高等教育一阶差分')
+
 #一阶差分后高等教育仍然非平稳，故不适合用时间序列方法做本题。
 
