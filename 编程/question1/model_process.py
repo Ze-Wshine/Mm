@@ -27,12 +27,7 @@ plt.title('残差 vs. 拟合值')
 plt.show()
 #结果近似满足方差齐性
 
-#3.自相关检验：检测残差序列中是否存在一阶自相关。
-dw_stat = sm.stats.stattools.durbin_watson(resid)
-print('Durbin–Watson 统计量：', dw_stat)
-# 统计量接近2,无自相关
-
-#4 线性关系检验，这里以人口自然增长率为例
+#3 线性关系检验，这里以人口自然增长率为例
 sm.graphics.plot_ccpr(main.model_义务, '人口自然增长率/%')
 plt.title('人口自然增长率对义务教育在校生的CCPR 图')
 plt.show()
