@@ -1,21 +1,17 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 from sklearn.linear_model import RidgeCV
 from sklearn.preprocessing import StandardScaler 
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score,mean_squared_error
 
-df = pd.read_excel(r'F:\数模校赛\Mm\编程\数据集\第二题整合数据.xlsx')
+df = pd.read_excel(r'数据集\第二题整合数据.xlsx')
 
 
 # 选择自变量
 X = df[['总户数/万户', '户均人口/人/户', '年末常驻总人口/万人', '出生率/%', '死亡率/%', '人口自然增长率/%', '城镇化率/%']]
 
 # 选择因变量
-y = df['义务教育在校生/万人']
+y = df['高等教育在校生/万人']
 
 # 标准化自变量
 scaler = StandardScaler()
@@ -39,7 +35,7 @@ alphas = np.logspace(-3, 3, 100)
 
 # 构建岭回归模型并进行交叉验证
 ridge_cv = RidgeCV(alphas=alphas, store_cv_values=True)
-ridge_cv.fit(X_scaled, y)
+ridge_cv.fit(X_scaled, y) #将数据拟合到模型
 
 # 输出最佳α值
 print(f"最佳 alpha 值: {ridge_cv.alpha_}")
@@ -53,3 +49,4 @@ print("回归系数:", coefficients)
 # 模型评分（R²）
 r2 = ridge_cv.score(X_scaled, y)
 print(f"模型 R² 分数: {r2}")
+
