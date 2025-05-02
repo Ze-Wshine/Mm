@@ -1,13 +1,12 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import statsmodels.api as sm
+import statsmodels.api as sm #用于时间序列建模及统计分析
+import scipy.stats as st  # 用于 Shapiro-Wilk 正态性检验
 
+from statsmodels.stats.diagnostic import acorr_ljungbox  # Ljung-Box 检验
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
-from sklearn.metrics import mean_squared_error, mean_absolute_error
-
-from statsmodels.stats.diagnostic import acorr_ljungbox
-import scipy.stats as st
+from sklearn.metrics import mean_squared_error, mean_absolute_error#评估模型性能
 
 # 设置中文字体
 plt.rcParams['font.family'] = ['Microsoft YaHei'] 
@@ -17,7 +16,7 @@ data = {
     'year': list(range(2015, 2024)),
     'exp': [597.52, 643.98, 658.67, 686.65, 677.74, 720.48, 709.2, 748.41, 835.33]
 }
-df = pd.DataFrame(data)
+df = pd.DataFrame(data) #创建数据框
 
 # 设置时间索引
 df['date'] = pd.to_datetime(df['year'], format='%Y')
@@ -37,6 +36,8 @@ model = ExponentialSmoothing(
 # 拟合模型（自动估计平滑参数）
 fit = model.fit(optimized=True)
 
+'''
+# 建模用
 
 # 获取趋势（b_t）和水平（ℓ_t）估计值
 # 水平估计值
@@ -52,7 +53,6 @@ print(level_estimates)
 print("趋势估计 (b_t):")
 print(trend_estimates)
 
-# 如果你需要把它们转换成 DataFrame 方便查看
 result_df = pd.DataFrame({
     'year': df.index.year,
     '水平估计 (ℓ_t)': level_estimates,
@@ -60,7 +60,9 @@ result_df = pd.DataFrame({
 })
 
 print(result_df)
-
+'''
+'''
+#建模用
 
 #检验模型拟合程度是否达标
 
@@ -82,7 +84,7 @@ sm.qqplot(residuals, line='s')
 plt.title('残差 Q–Q 图')
 plt.show()
 #数据点大致落在参考直线附近，正态性成立。
-'''
+
 # 4.Ljung–Box 检验
 max_lag = min(10, len(residuals) - 1)
 lb_df = acorr_ljungbox(residuals, lags=[max_lag], return_df=True)
@@ -130,14 +132,14 @@ if shapiro_p > 0.05:
 else:
     print("→ 残差偏离正态分布，可能需要变换或其他模型")
 # 残差符合正态分布，满足假设。
-
+'''
 # 预测未来3年
 forecast = fit.forecast(3)
 forecast.index = pd.to_datetime([2024, 2025, 2026], format='%Y')
 
 print("\n未来三年年度预测：")
 print(forecast)
-'''
+
 
 '''# 可视化结果
 plt.figure(figsize=(10, 6))
