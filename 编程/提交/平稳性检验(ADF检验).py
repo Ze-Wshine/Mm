@@ -9,7 +9,7 @@ print(os.getcwd())
 plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
 
 # 读取Excel数据
-df = pd.read_excel(r'数据集\在校生人数历史数据.xls', sheet_name='17-10', engine='xlrd')
+df = pd.read_excel(r'数据集\在校生人数历史数据.xlsx', sheet_name='17-10', engine='xlrd')
 
 
 
