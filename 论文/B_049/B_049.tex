@@ -63,14 +63,14 @@
 
 \begin{document}
 	
-	% ---------- 封面页 ----------
-	\newgeometry{margin=0cm, nohead, nofoot} % 临时页边距
+	% 直接暴力插入图片作封面
+	\newgeometry{margin=0cm, nohead, nofoot}
 	\thispagestyle{empty} % 隐藏封面页页码
 	
-	% 核心修改：使用绝对定位直接覆盖页面
+
 	\AtBeginShipoutNext{%
 		\AtBeginShipoutUpperLeft{%
-			\put(0,-\paperheight){% 从左上角原点开始定位
+			\put(0,-\paperheight){
 				\includegraphics[
 				width=\paperwidth,
 				height=\paperheight,
@@ -145,7 +145,7 @@
 	\end{tabular}
 	
 	\section{问题分析}
-	针对问题一：考虑到有准确的在校生人数历史数据\autocite{tjnj}（整理后如下图3-1），可以选择建立{\bfseries 时间序列模型}，因其无需复杂因果分析且适合短期预测。但通过计算我们发现义务教育和高等教育的相关数据不满足时间序列的建立条件，即时间序列{\bfseries 不平稳}，于是建立{\bfseries 多元线性回归模型}。
+	针对问题一：考虑到有准确的在校生人数历史数据\autocite{tjnj}（整理后如下图3-1），可以选择建立时间序列模型，因其无需对复杂的因果关系进行深入分析，且适合短期预测。但通过实际计算我们发现义务教育和高等教育的相关数据不满足时间序列的建立条件，即时间序列不平稳，且在进行一阶差分之后仍不平稳（具体见附件代码）。这意味着时间序列模型的基本假设不成立，因此无法直接应用。为了避免这一问题，我们转而考虑多元线性回归模型预测第一题。该模型不仅能够处理多重变量之间的关系，还能够解决数据不平稳的问题，符合第一题的实际情况。并且，多元线性回归模型具有较高的解释性，能够通过回归系数反映各个自变量对因变量的具体贡献，给出更为合理的预测结果。因此，最终我们决定使用多元线性回归模型解决第一题。
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.5\textwidth]{../图片/在校生人数变化趋势.png}
@@ -214,7 +214,65 @@
 		\hat{\alpha}_1 = \frac{\sum(t_i - \bar{t})(X_i - \bar{X})}{\sum(t_i-\bar{t})^2}, \hat{\alpha}_0 = \bar{X} - \hat{\alpha}_1\bar{t}
 		\]
 		
-		这样我们就能得到变量$X_1,...,X_8$的预测值,结果如图4-4至4-6：
+		这样我们就能得到变量$X_1,...,X_8$的预测值,结果如下：
+		\begin{table}[H]
+			\begin{minipage}[b]{0.3\textwidth}
+				\centering
+				\begin{tabular}{@{}c c@{}}
+					\toprule
+					\textbf{符号} & \textbf{值} \\
+					\midrule
+					$X_1$        & 3.624 \\
+					$X_2$		 & 9.224 \\
+					$X_3$		 & -5.600182 \\
+					$X_4$		 & 65.931273 \\
+					$X_5$		 & 2276.327273 \\
+					$X_6$		 & 6859 \\
+					$X_7$		 & 481 \\
+					$X_8$		 & 68 \\
+					\bottomrule
+				\end{tabular}
+				\caption{\zihao{6}2026年自变量预测值}
+			\end{minipage}
+			\begin{minipage}[b]{0.3\textwidth}
+				\centering
+				\begin{tabular}{@{}c c@{}}
+					\toprule
+					\textbf{符号} & \textbf{值} \\
+					\midrule
+					$X_1$        & 3.213909 \\
+					$X_2$		 & 9.577545 \\
+					$X_3$		 & -6.363545 \\
+					$X_4$		 & 66.835273 \\
+					$X_5$		 & 2240.427273 \\
+					$X_6$		 & 6527 \\
+					$X_7$		 & 475 \\
+					$X_8$		 & 69 \\
+					\bottomrule
+				\end{tabular}
+				\caption{\zihao{6}2027自变量预测值}
+			\end{minipage}
+			\begin{minipage}[b]{0.3\textwidth}
+				\centering
+				\begin{tabular}{@{}c c@{}}
+					\toprule
+					\textbf{符号} & \textbf{值} \\
+					\midrule
+					$X_1$        & 2.803818 \\
+					$X_2$		 & 9.931091 \\
+					$X_3$		 & -7.126909 \\
+					$X_4$		 & 67.739273 \\
+					$X_5$		 & 2204.527273 \\
+					$X_6$		 & 6195 \\
+					$X_7$		 & 470 \\
+					$X_8$		 & 70 \\
+					\bottomrule
+				\end{tabular}
+				\caption{\zihao{6}2028自变量预测值}
+			\end{minipage}
+		\end{table}
+		
+		
 		\begin{figure}[H]
 			\centering
 			\begin{minipage}[b]{0.7\textwidth}
@@ -223,9 +281,6 @@
 				\caption{\zihao{6}图4-4}
 				\label{fig:4d}
 			\end{minipage}
-		\end{figure}
-		\begin{figure}[H]
-			\centering
 			% 第二张图
 			\begin{minipage}[b]{0.48\textwidth}
 				\centering
@@ -249,18 +304,11 @@
 		\[
 		\hat{Y}^{(i)} = \hat{\beta}_0 + \sum_{j=1}^{8}\hat{\beta}_j\hat{X}_j
 		\]
-		我们这么来考察参数的估计：
+		我们通过以下参数来判断模型拟合程度：
 		\begin{itemize}
-			\item 残差是否近似正态分布
-			\item 异方差检验，Breusch-Pagan检验统计量：$LM=n \times R^2$
-			\item 辅助回归拟合优度$R^2$：
-			\[
-				R^2 = 1 - \frac{\sum(Y_i - \hat{Y}_i)^2}{\sum(Y_i - \bar{Y})^2}
-			\]
-			\item 调整$R^2$：
-			\[
-			\bar{R}^2 = 1 - (1-R^2)\frac{n - 1}{n-k-1}
-			\]
+			\item 残差是否近似正态分布，如果近似，则意味着模型的误差是随机的，没有系统性的模式，且符合经典线性回归假设。我们检验残差后，发现我们的模型满足近似正态分布的结果（具体见代码）
+			\item 异方差检验。我们通过绘制“残差拟合值”散点图，发现我们的残差在拟合值的整个范围内随机分布，没有明显规律性或趋势，表明我们的模型没有明显的异方差问题，满足方差齐性的假设。（具体见代码）
+			
 		借助statsmodels.api库的OLS函数，线性回归系数的计算结果如下：
 		\begin{table}[H]
 			\begin{minipage}[b]{0.3\textwidth}
@@ -321,8 +369,49 @@
 			\caption{\zihao{6}$Y^{(3)}\text{的方程参数}$}
 			\end{minipage}
 			\end{table}
-		\clearpage
+%		\clearpage
 		最后，我们得出对未来三年在校生人数的预测如下：
+		\begin{table}[H]
+			\begin{minipage}[b]{0.3\textwidth}
+				\centering
+				\begin{tabular}{@{}c c@{}}
+					\toprule
+					\textbf{符号} & \textbf{值} \\
+					\midrule
+					$Y^{(1)}$    & 167.6 \\
+					$Y^{(2)}$    & 54.85 \\
+					$Y^{(3)}$    & 92.29 \\
+					\bottomrule
+				\end{tabular}
+				\caption{\zihao{6}2026年因变量预测值}
+			\end{minipage}
+			\begin{minipage}[b]{0.3\textwidth}
+				\centering
+				\begin{tabular}{@{}c c@{}}
+					\toprule
+					\textbf{符号} & \textbf{值} \\
+					\midrule
+					$Y^{(1)}$    & 165.02 \\
+					$Y^{(2)}$    & 54.64 \\
+					$Y^{(3)}$    & 94.94 \\
+					\bottomrule
+				\end{tabular}
+				\caption{\zihao{6}2027因变量预测值}
+			\end{minipage}
+			\begin{minipage}[b]{0.3\textwidth}
+				\centering
+				\begin{tabular}{@{}c c@{}}
+					\toprule
+					\textbf{符号} & \textbf{值} \\
+					\midrule
+					$Y^{(1)}$    & 162.43 \\
+					$Y^{(2)}$    & 54.43 \\
+					$Y^{(3)}$    & 97.59 \\
+					\bottomrule
+				\end{tabular}
+				\caption{\zihao{6}2028因变量预测值}
+			\end{minipage}
+		\end{table}
 			\begin{figure}[H]
 			\centering
 			\includegraphics[width=0.7\textwidth]{../图片/4-7.png}
